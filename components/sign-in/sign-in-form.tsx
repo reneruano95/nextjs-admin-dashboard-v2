@@ -133,7 +133,8 @@ export default function SignInForm() {
                     </div>
                   </FormControl>
                   <FormDescription className="!mt-0">
-                    Contact us if you forgot your password.
+                    Contact your administrator if you don&apos;t remember your
+                    password.
                   </FormDescription>
                 </FormItem>
               )}
