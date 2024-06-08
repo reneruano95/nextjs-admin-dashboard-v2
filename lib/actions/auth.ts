@@ -1,8 +1,27 @@
 "use server";
 
-import { AuthResponse } from "@supabase/supabase-js";
-import { SignUpFormValues } from "../types";
+import { AuthResponse, AuthTokenResponsePassword } from "@supabase/supabase-js";
+import { SignInFormValues, SignUpFormValues } from "../types";
 import { createClient } from "../supabase/server";
+
+export async function signIn(
+  data: SignInFormValues
+): Promise<AuthTokenResponsePassword> {
+  const supabase = createClient();
+  const { email, password } = data;
+
+  let result;
+  try {
+    result = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+  } catch (error) {
+    throw error;
+  }
+
+  return JSON.parse(JSON.stringify(result));
+}
 
 export async function signUp(data: SignUpFormValues): Promise<AuthResponse> {
   const supabase = createClient();
