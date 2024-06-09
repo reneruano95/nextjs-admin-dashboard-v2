@@ -1,9 +1,10 @@
 "use client";
 
-import { ElementRef, useRef, useState } from "react";
+import { ElementRef, useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Ellipsis, GripVertical, LogOut, LogOutIcon } from "lucide-react";
+import { Ellipsis, GripVertical, LogOutIcon } from "lucide-react";
+import { useMediaQuery } from "usehooks-ts";
 
 import {
   Tooltip,
@@ -17,14 +18,22 @@ import { getMenuList } from "./menu-list";
 import { signOut } from "@/lib/actions/auth";
 
 export default function Sidebar() {
+  const isLaptop = useMediaQuery("(max-width: 1023px)");
+
   const sidebarRef = useRef<ElementRef<"aside">>(null);
   const isResizingRef = useRef(false);
   const [isResetting, setIsResetting] = useState(false);
-  const [isNotCollapsed, setIsNotCollapsed] = useState(false);
+  const [isNotCollapsed, setIsNotCollapsed] = useState(true);
 
   const router = useRouter();
   const pathname = usePathname();
   const menuList = getMenuList(pathname);
+
+  useEffect(() => {
+    if (isLaptop) {
+      collapse();
+    }
+  }, [isLaptop]);
 
   const handleMouseDown = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -42,11 +51,11 @@ export default function Sidebar() {
 
     let newWidth = event.clientX;
     if (newWidth > 240) {
-      setIsNotCollapsed(false);
+      setIsNotCollapsed(true);
       newWidth = 240;
     }
     if (newWidth < 56) {
-      setIsNotCollapsed(true);
+      setIsNotCollapsed(false);
       newWidth = 56;
     }
 
@@ -62,16 +71,24 @@ export default function Sidebar() {
   };
 
   const handleReset = () => {
-    if (sidebarRef.current) {
+    if (sidebarRef.current && !isLaptop) {
       setIsResetting(true);
       setIsNotCollapsed(!isNotCollapsed);
-      sidebarRef.current.style.width = !isNotCollapsed ? "56px" : "240px";
+      sidebarRef.current.style.width = isNotCollapsed ? "56px" : "240px";
+
+      setTimeout(() => setIsResetting(false), 300);
+    }
+  };
+
+  const collapse = useCallback(() => {
+    if (sidebarRef.current) {
+      setIsNotCollapsed(false);
+      setIsResetting(true);
+      sidebarRef.current.style.width = "56px";
     }
 
-    setTimeout(() => {
-      setIsResetting(false);
-    }, 300);
-  };
+    setTimeout(() => setIsResetting(false), 300);
+  }, [isNotCollapsed]);
 
   return (
     <>
@@ -82,24 +99,24 @@ export default function Sidebar() {
           isResetting && "transition-all ease-in-out duration-300"
         )}
       >
-        <div>
-          <p>Sidebar</p>
-        </div>
+        <Link
+          className="m-2 flex h-20 items-end justify-start rounded-md bg-blue-600 p-4"
+          href="/"
+        >
+          <div className="w-32 text-white  truncate">Logo</div>
+        </Link>
         <div className="mt-4 flex-1">
           <ul
             role="list"
-            className="h-full flex flex-col items-start space-y-1 px-2"
+            className="h-full flex flex-col items-start space-y-2 px-2"
           >
             {menuList.map(({ groupLabel, children }, index) => (
-              <li
-                key={index}
-                className={cn("w-full", groupLabel ? "pt-5" : "")}
-              >
-                {groupLabel && !isNotCollapsed ? (
+              <li key={index} className={cn("w-full")}>
+                {groupLabel && isNotCollapsed ? (
                   <p className="text-sm font-medium text-muted-foreground px-4 pb-2 truncate">
                     {groupLabel}
                   </p>
-                ) : isNotCollapsed && groupLabel ? (
+                ) : !isNotCollapsed && groupLabel ? (
                   <TooltipProvider>
                     <Tooltip delayDuration={100}>
                       <TooltipTrigger className="w-full">
@@ -112,7 +129,9 @@ export default function Sidebar() {
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
-                ) : null}
+                ) : (
+                  <p className="pb-2"></p>
+                )}
                 {children.map(({ href, label, active, icon }, index) => (
                   <div className="w-full" key={index}>
                     <TooltipProvider disableHoverableContent>
@@ -122,7 +141,7 @@ export default function Sidebar() {
                             variant={active ? "secondary" : "ghost"}
                             className={cn(
                               "w-full justify-start h-10 mb-1 hover:bg-gray-500/10",
-                              isNotCollapsed && "justify-center",
+                              !isNotCollapsed && "justify-center",
                               active && "bg-gray-500/10"
                             )}
                             asChild
@@ -130,7 +149,7 @@ export default function Sidebar() {
                             <Link href={href}>
                               <span
                                 className={cn(
-                                  !isNotCollapsed === false ? "" : "mr-4",
+                                  isNotCollapsed === false ? "" : "mr-4",
                                   "w-4 h-4 flex items-center justify-center"
                                 )}
                               >
@@ -139,7 +158,7 @@ export default function Sidebar() {
                               <p
                                 className={cn(
                                   "max-w-[240px] truncate",
-                                  !isNotCollapsed === false
+                                  isNotCollapsed === false
                                     ? "-translate-x-96 opacity-0"
                                     : "translate-x-0 opacity-100"
                                 )}
@@ -149,7 +168,7 @@ export default function Sidebar() {
                             </Link>
                           </Button>
                         </TooltipTrigger>
-                        {!isNotCollapsed === false && (
+                        {isNotCollapsed === false && (
                           <TooltipContent side="right">{label}</TooltipContent>
                         )}
                       </Tooltip>
@@ -170,18 +189,18 @@ export default function Sidebar() {
                       variant="secondary"
                       className={cn(
                         "w-full justify-start h-10 my-5 text-destructive hover:bg-destructive/10",
-                        isNotCollapsed && "justify-center"
+                        !isNotCollapsed && "justify-center"
                       )}
                     >
                       <span
-                        className={cn(!isNotCollapsed === false ? "" : "mr-4")}
+                        className={cn(isNotCollapsed === false ? "" : "mr-4")}
                       >
                         <LogOutIcon size={18} />
                       </span>
                       <p
                         className={cn(
-                          "whitespace-nowrap",
-                          !isNotCollapsed === false
+                          "whitespace-nowrap truncate",
+                          isNotCollapsed === false
                             ? "opacity-0 hidden"
                             : "opacity-100"
                         )}
@@ -190,7 +209,7 @@ export default function Sidebar() {
                       </p>
                     </Button>
                   </TooltipTrigger>
-                  {!isNotCollapsed === false && (
+                  {isNotCollapsed === false && (
                     <TooltipContent side="right">Sign out</TooltipContent>
                   )}
                 </Tooltip>
