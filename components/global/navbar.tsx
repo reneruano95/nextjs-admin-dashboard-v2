@@ -106,7 +106,7 @@ export default function Navbar({ className }: React.ComponentProps<"nav">) {
                             }}
                             variant="ghost"
                             className={cn(
-                              "w-full justify-center h-10 my-5 text-destructive hover:bg-destructive/10 hover:text-destructive-foreground"
+                              "w-full justify-center h-10 my-5 text-destructive hover:bg-destructive/10 hover:text-destructive"
                             )}
                           >
                             <LogOutIcon />
