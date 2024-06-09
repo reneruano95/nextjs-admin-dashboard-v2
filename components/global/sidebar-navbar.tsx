@@ -117,16 +117,16 @@ export default function Sidebar() {
                             variant={active ? "secondary" : "ghost"}
                             className={cn(
                               "w-full justify-start h-10 mb-1 hover:bg-gray-500/10",
-                              {
-                                "justify-center": isNotCollapsed,
-                              }
+                              isNotCollapsed && "justify-center",
+                              active && "bg-gray-500/10"
                             )}
                             asChild
                           >
                             <Link href={href}>
                               <span
                                 className={cn(
-                                  !isNotCollapsed === false ? "" : "mr-4"
+                                  !isNotCollapsed === false ? "" : "mr-4",
+                                  "w-4 h-4 flex items-center justify-center"
                                 )}
                               >
                                 {icon}
