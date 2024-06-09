@@ -1,4 +1,4 @@
-import Sidebar from "@/components/global/sidebar-navbar";
+import Sidebar from "@/components/global/sidebar";
 import {
   ResizableHandle,
   ResizablePanel,
