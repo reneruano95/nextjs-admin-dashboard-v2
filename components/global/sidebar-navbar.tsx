@@ -32,6 +32,8 @@ export default function Sidebar() {
   useEffect(() => {
     if (isLaptop) {
       collapse();
+    } else {
+      expand();
     }
   }, [isLaptop]);
 
@@ -84,10 +86,22 @@ export default function Sidebar() {
     if (sidebarRef.current) {
       setIsNotCollapsed(false);
       setIsResetting(true);
-      sidebarRef.current.style.width = "56px";
-    }
 
-    setTimeout(() => setIsResetting(false), 300);
+      sidebarRef.current.style.width = "56px";
+
+      setTimeout(() => setIsResetting(false), 300);
+    }
+  }, [isNotCollapsed]);
+
+  const expand = useCallback(() => {
+    if (sidebarRef.current) {
+      setIsNotCollapsed(true);
+      setIsResetting(true);
+
+      sidebarRef.current.style.width = "240px";
+
+      setTimeout(() => setIsResetting(false), 300);
+    }
   }, [isNotCollapsed]);
 
   return (
@@ -138,7 +152,7 @@ export default function Sidebar() {
                       <Tooltip delayDuration={100}>
                         <TooltipTrigger asChild>
                           <Button
-                            variant={active ? "secondary" : "ghost"}
+                            variant="ghost"
                             className={cn(
                               "w-full justify-start h-10 mb-1 hover:bg-gray-500/10",
                               !isNotCollapsed && "justify-center",
