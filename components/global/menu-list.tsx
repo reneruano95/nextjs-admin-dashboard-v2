@@ -57,9 +57,9 @@ export const getMenuList = (pathname: string): GroupMenuItem[] => {
           description: "Manage Kanban boards",
         },
         {
-          href: "/invoicify",
-          label: "Invoicify",
-          active: pathname.includes("/invoicify"),
+          href: "/invoices",
+          label: "Invoices",
+          active: pathname.includes("/invoices"),
           icon: <StickyNote />,
           description: "Manage invoices",
         },

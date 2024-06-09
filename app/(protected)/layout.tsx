@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/global/breadcrumb";
 import Navbar from "@/components/global/navbar";
 import Sidebar from "@/components/global/sidebar";
 
@@ -11,7 +12,10 @@ export default function ProtectedLayout({
       <Sidebar className="hidden md:flex" />
       <Navbar className="flex flex-shrink-0 md:hidden" />
 
-      <main className="flex-1 h-full overflow-y-auto p-6">{children}</main>
+      <main className="flex-1 h-full overflow-y-auto p-6">
+        <Breadcrumb />
+        {children}
+      </main>
     </div>
   );
 }
