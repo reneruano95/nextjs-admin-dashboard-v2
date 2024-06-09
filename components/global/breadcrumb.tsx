@@ -28,7 +28,8 @@ export default function Breadcrumb() {
             key={breadcrumb.href}
             aria-current={breadcrumb.active}
             className={cn(
-              breadcrumb.active ? "text-gray-900" : "text-gray-500"
+              breadcrumb.active ? "text-gray-900" : "text-gray-500",
+              "hover:text-gray-700 hover:underline hover:underline-offset-4"
             )}
           >
             <Link href={breadcrumb.href}>{breadcrumb.label}</Link>
