@@ -91,7 +91,7 @@ export default function Sidebar({ className }: React.ComponentProps<"aside">) {
 
       setTimeout(() => setIsResetting(false), 300);
     }
-  }, [isNotCollapsed]);
+  }, []);
 
   const expand = useCallback(() => {
     if (sidebarRef.current) {
@@ -102,7 +102,7 @@ export default function Sidebar({ className }: React.ComponentProps<"aside">) {
 
       setTimeout(() => setIsResetting(false), 300);
     }
-  }, [isNotCollapsed]);
+  }, []);
 
   return (
     <>
