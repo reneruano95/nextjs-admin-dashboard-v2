@@ -6,6 +6,7 @@ declare interface SignUpFormValues extends z.infer<typeof signUpSchema> {}
 
 declare interface GroupMenuItem {
   groupLabel: string;
+  icon?: FC<SVGProps<SVGSVGElement>>;
   children: MenuItem[];
 }
 declare interface MenuItem {
@@ -13,4 +14,5 @@ declare interface MenuItem {
   href: string;
   active?: boolean;
   icon: FC<SVGProps<SVGSVGElement>>;
+  description?: string;
 }

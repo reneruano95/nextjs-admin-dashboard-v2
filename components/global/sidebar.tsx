@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 import { getMenuList } from "./menu-list";
 import { signOut } from "@/lib/actions/auth";
 
-export default function Sidebar() {
+export default function Sidebar({ className }: React.ComponentProps<"aside">) {
   const isLaptop = useMediaQuery("(max-width: 1023px)");
 
   const sidebarRef = useRef<ElementRef<"aside">>(null);
@@ -110,14 +110,15 @@ export default function Sidebar() {
         ref={sidebarRef}
         className={cn(
           "h-full w-14 max-w-14  lg:w-60 lg:max-w-60 group/sidebar bg-secondary relative flex flex-col",
-          isResetting && "transition-all ease-in-out duration-300"
+          isResetting && "transition-all ease-in-out duration-300",
+          className
         )}
       >
         <Link
           className="m-2 flex h-20 items-end justify-start rounded-md bg-blue-600 p-4"
           href="/"
         >
-          <div className="w-32 text-white  truncate">Logo</div>
+          <div className="w-32 text-white truncate">Logo</div>
         </Link>
         <div className="mt-4 flex-1">
           <ul
