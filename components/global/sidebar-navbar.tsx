@@ -1,8 +1,9 @@
 "use client";
 
 import { ElementRef, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
-import { Ellipsis, GripVertical } from "lucide-react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { Ellipsis, GripVertical, LogOut, LogOutIcon } from "lucide-react";
 
 import {
   Tooltip,
@@ -10,10 +11,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
+import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { getMenuList } from "./menu-list";
-import { Button } from "../ui/button";
-import Link from "next/link";
+import { signOut } from "@/lib/actions/auth";
 
 export default function Sidebar() {
   const sidebarRef = useRef<ElementRef<"aside">>(null);
@@ -21,6 +22,7 @@ export default function Sidebar() {
   const [isResetting, setIsResetting] = useState(false);
   const [isNotCollapsed, setIsNotCollapsed] = useState(false);
 
+  const router = useRouter();
   const pathname = usePathname();
   const menuList = getMenuList(pathname);
 
@@ -83,8 +85,11 @@ export default function Sidebar() {
         <div>
           <p>Sidebar</p>
         </div>
-        <div className="mt-4">
-          <ul role="list" className="flex flex-col items-start space-y-1 px-2">
+        <div className="mt-4 flex-1">
+          <ul
+            role="list"
+            className="h-full flex flex-col items-start space-y-1 px-2"
+          >
             {menuList.map(({ groupLabel, children }, index) => (
               <li
                 key={index}
@@ -153,6 +158,44 @@ export default function Sidebar() {
                 ))}
               </li>
             ))}
+            <li className="w-full flex-1 flex items-end">
+              <TooltipProvider disableHoverableContent>
+                <Tooltip delayDuration={100}>
+                  <TooltipTrigger asChild>
+                    <Button
+                      onClick={async () => {
+                        await signOut();
+                        router.push("/sign-in");
+                      }}
+                      variant="secondary"
+                      className={cn(
+                        "w-full justify-start h-10 my-5 text-destructive hover:bg-destructive/10",
+                        isNotCollapsed && "justify-center"
+                      )}
+                    >
+                      <span
+                        className={cn(!isNotCollapsed === false ? "" : "mr-4")}
+                      >
+                        <LogOutIcon size={18} />
+                      </span>
+                      <p
+                        className={cn(
+                          "whitespace-nowrap",
+                          !isNotCollapsed === false
+                            ? "opacity-0 hidden"
+                            : "opacity-100"
+                        )}
+                      >
+                        Sign out
+                      </p>
+                    </Button>
+                  </TooltipTrigger>
+                  {!isNotCollapsed === false && (
+                    <TooltipContent side="right">Sign out</TooltipContent>
+                  )}
+                </Tooltip>
+              </TooltipProvider>
+            </li>
           </ul>
         </div>
 

@@ -1,6 +1,10 @@
 "use server";
 
-import { AuthResponse, AuthTokenResponsePassword } from "@supabase/supabase-js";
+import {
+  AuthError,
+  AuthResponse,
+  AuthTokenResponsePassword,
+} from "@supabase/supabase-js";
 import { SignInFormValues, SignUpFormValues } from "../types";
 import { createClient } from "../supabase/server";
 
@@ -53,4 +57,19 @@ export async function signUp(data: SignUpFormValues): Promise<AuthResponse> {
   }
 
   return JSON.parse(JSON.stringify(result));
+}
+
+export async function signOut(): Promise<AuthError | null> {
+  const supabase = createClient();
+
+  let result;
+  try {
+    result = await supabase.auth.signOut();
+  } catch (error) {
+    throw error;
+  }
+
+  let { error } = result;
+
+  return JSON.parse(JSON.stringify(error));
 }
