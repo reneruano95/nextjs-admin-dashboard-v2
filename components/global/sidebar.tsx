@@ -170,16 +170,7 @@ export default function Sidebar({ className }: React.ComponentProps<"aside">) {
                               >
                                 {icon}
                               </span>
-                              <p
-                                className={cn(
-                                  "max-w-[240px] truncate",
-                                  isNotCollapsed === false
-                                    ? "-translate-x-96 opacity-0"
-                                    : "translate-x-0 opacity-100"
-                                )}
-                              >
-                                {label}
-                              </p>
+                              <p className={cn("truncate")}>{label}</p>
                             </Link>
                           </Button>
                         </TooltipTrigger>
@@ -203,25 +194,16 @@ export default function Sidebar({ className }: React.ComponentProps<"aside">) {
                       }}
                       variant="secondary"
                       className={cn(
-                        "w-full justify-start h-10 my-5 text-destructive hover:bg-destructive/10",
+                        "w-full justify-start my-5 text-destructive hover:bg-destructive/10",
                         !isNotCollapsed && "justify-center"
                       )}
                     >
                       <span
                         className={cn(isNotCollapsed === false ? "" : "mr-4")}
                       >
-                        <LogOutIcon size={18} />
+                        <LogOutIcon className="h-4 w-4" />
                       </span>
-                      <p
-                        className={cn(
-                          "whitespace-nowrap truncate",
-                          isNotCollapsed === false
-                            ? "opacity-0 hidden"
-                            : "opacity-100"
-                        )}
-                      >
-                        Sign out
-                      </p>
+                      <p className={cn("truncate")}>Sign out</p>
                     </Button>
                   </TooltipTrigger>
                   {isNotCollapsed === false && (
