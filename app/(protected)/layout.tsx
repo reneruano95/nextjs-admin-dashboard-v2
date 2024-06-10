@@ -12,7 +12,7 @@ export default function ProtectedLayout({
       <Sidebar className="hidden md:flex" />
       <Navbar className="flex flex-shrink-0 md:hidden" />
 
-      <main className="flex-1 h-full overflow-y-auto p-6">
+      <main className="flex-1 flex flex-col p-4">
         <Breadcrumb />
         {children}
       </main>
