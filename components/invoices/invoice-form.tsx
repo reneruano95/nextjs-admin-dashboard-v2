@@ -1,38 +1,49 @@
 "use client";
 
 import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import BillFromForm from "./bill-from-form";
-
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-});
+import { InvoiceValues } from "@/lib/types";
+import { invoiceSchema } from "@/lib/schemas/invoices";
 
 export default function InvoiceForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<InvoiceValues>({
     defaultValues: {
-      username: "",
+      businessName: "",
+      businessAddress: "",
+      businessCity: "",
+      businessPostalCode: "",
+      businessCountry: "",
+      businessEmail: "",
+      businessPhone: "",
+      businessWebsite: "",
+      businessOwner: "",
+      clientName: "",
+      clientEmail: "",
+      clientAddress: "",
+      clientCity: "",
+      clientPostalCode: "",
+      clientCountry: "",
+      clientPhone: "",
     },
+    resolver: zodResolver(invoiceSchema),
   });
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
+  function onSubmit(data: InvoiceValues) {
     console.log(data);
   }
   return (
     <div className="z-10">
-      <Form {...form}>
+      <FormProvider {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <BillFromForm form={form} />
+          <BillFromForm />
           <Button type="submit">Submit</Button>
         </form>
-      </Form>
+      </FormProvider>
     </div>
   );
 }

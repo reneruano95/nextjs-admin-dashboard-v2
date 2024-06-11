@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { UseFormReturn, useForm } from "react-hook-form";
+import { UseFormReturn, useForm, useFormContext } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
@@ -13,13 +13,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { InvoiceValues } from "@/lib/types";
 
-export default function BillFromForm({ form }: { form: UseFormReturn<any> }) {
+export default function BillFromForm() {
+  const { control } = useFormContext<InvoiceValues>();
   return (
     <div className="bg-secondary h-full w-full rounded-md">
       <FormField
-        control={form.control}
-        name="username"
+        control={control}
+        name="businessName"
         render={({ field }) => (
           <FormItem>
             <FormLabel>Username</FormLabel>

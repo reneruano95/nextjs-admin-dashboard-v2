@@ -26,4 +26,4 @@ export const billToSchema = z.object({
   clientPhone: z.string().min(1, "Phone number is required."),
 });
 
-export const invoiceSchema = z.object({});
+export const invoiceSchema = billFromSchema.extend(billToSchema.shape);
