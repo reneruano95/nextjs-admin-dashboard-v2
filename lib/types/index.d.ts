@@ -1,5 +1,10 @@
 import { z } from "zod";
 import { signInSchema, signUpSchema } from "../schemas/auth";
+import {
+  billFromSchema,
+  billToSchema,
+  invoiceSchema,
+} from "../schemas/invoices";
 
 declare interface SignInFormValues extends z.infer<typeof signInSchema> {}
 declare interface SignUpFormValues extends z.infer<typeof signUpSchema> {}
@@ -16,3 +21,7 @@ declare interface MenuItem {
   icon: FC<SVGProps<SVGSVGElement>>;
   description?: string;
 }
+
+declare interface BillFromValues extends z.infer<typeof billFromSchema> {}
+declare interface BillToValues extends z.infer<typeof billToSchema> {}
+declare interface InvoiceValues extends z.infer<typeof invoiceSchema> {}
